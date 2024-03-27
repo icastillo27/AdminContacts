@@ -1,0 +1,52 @@
+﻿
+@inject NavigationManager NavigatorManager
+@*<div class="top-row pl-4 navbar navbar-dark">
+        <a class="navbar-brand" href="">Administracion</a>
+        <button class="navbar-toggler" @onclick="ToggleNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+
+    <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+        <ul class="nav flex-column">
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                    <span class="oi oi-home" aria-hidden="true"></span> Home
+                </NavLink>
+            </li>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="contactDetails">
+                    <span class="oi oi-list-rich" aria-hidden="true"></span> Contact Details
+                </NavLink>
+            </li>
+        </ul>
+    </div>*@
+
+<RadzenPanelMenu>
+    <RadzenPanelMenuItem Text="Home" Icon="home" Click="@(arg=> NavigateHome())" />
+    <RadzenPanelMenuItem Text="Detail Contact" Icon="more" Click="@(arg => NavigateDetailContact())" />
+</RadzenPanelMenu>
+
+
+
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+
+    private void NavigateHome()
+    {
+        NavigatorManager.NavigateTo("/");
+    }
+
+    private void NavigateDetailContact()
+    {
+        NavigatorManager.NavigateTo("contactDetails");
+    }
+}

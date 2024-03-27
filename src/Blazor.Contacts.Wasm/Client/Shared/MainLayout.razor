@@ -1,0 +1,40 @@
+﻿@inherits LayoutComponentBase
+
+@*<div class="page">*@
+    @*<div class="sidebar">
+            <NavMenu />
+        </div>*@
+
+<RadzenLayout>
+    <RadzenHeader>
+        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="0">
+            <RadzenSidebarToggle Click="@(() => sidebar1Expanded = !sidebar1Expanded)" />
+            <RadzenLabel Text="Administración de Contactos"/>
+        </RadzenStack>        
+    </RadzenHeader>
+    <RadzenSidebar @bind-Expanded="@sidebar1Expanded">
+        <NavMenu />
+    </RadzenSidebar>
+    <RadzenBody>
+        <div class="rz-p-4">
+            @Body
+        </div>
+    </RadzenBody>
+
+</RadzenLayout>
+
+
+    @*<div class="main">
+        <div class="top-row px-4">
+            <a href="http://blazor.net" target="_blank" class="ml-md-auto">About</a>
+        </div>
+
+        <div class="content px-4">
+            @Body
+        </div>
+    </div>*@
+@*</div>*@
+
+@code {
+    bool sidebar1Expanded = true;
+}

@@ -1,0 +1,82 @@
+﻿@page "/contactDetails"
+@page "/contactDetails/{Id:int}"
+
+@inject IContactService ContactService
+@inject NavigationManager NavigatorManager
+
+@if (contact == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <RadzenTemplateForm Data="@contact">
+
+        <RadzenFieldset Text="Contact Details">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <RadzenTextBox Placeholder="First Name" Name="firstName" class="form-control" @bind-Value="@contact.FirstName"></RadzenTextBox>
+                    <RadzenRequiredValidator Component="firstName" Text="First name is required!" />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <RadzenTextBox Placeholder="Last Name" class="form-control" @bind-Value="@contact.LastName"></RadzenTextBox>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 mb-3">
+                    <RadzenNumeric Placeholder="Phone" class="form-control" Trim="true" @bind-Value="@contact.Phone"></RadzenNumeric>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 mb-3">
+                    <RadzenTextArea Placeholder="Address" class="form-control" @bind-Value="@contact.Address"></RadzenTextArea>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                </div>
+                <div class="col-md-4 mb-3">
+                    <RadzenButton ButtonStyle="ButtonStyle.Primary" ButtonType="ButtonType.Submit" Text="Save" Click="@(arg=> Save())" />
+                    <RadzenButton ButtonStyle="ButtonStyle.Secondary" Text="Cancel" Click="@(arg=> NavigateHome())" />
+                </div>
+                <div class="col-md-4 mb-3">
+                </div>
+            </div>
+        </RadzenFieldset>
+    </RadzenTemplateForm>
+}
+
+@code {
+    public Contact contact;
+
+    [Parameter]
+    public int Id { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        if (Id == 0)
+        {
+            contact = new Contact();
+        }
+        else
+        {
+            contact = await ContactService.GetDetails(Id);
+        }
+
+    }
+
+    protected async Task Save()
+    {
+        if (!string.IsNullOrEmpty(contact.FullName))
+        {
+            await ContactService.SaveContact(contact);
+            NavigateHome();
+        }
+
+    }
+
+    private void NavigateHome()
+    {
+        NavigatorManager.NavigateTo("/");
+    }
+}
